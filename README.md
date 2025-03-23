@@ -115,7 +115,7 @@ print(response.json())
 The system can be configured via environment variables or the `.env` file:
 
 | Variable | Description | Default |
-|----------|-------------|---------|
+|----------|-------------|--------|
 | API_HOST | API server host | 0.0.0.0 |
 | API_PORT | API server port | 8000 |
 | LOG_LEVEL | Logging level | info |
