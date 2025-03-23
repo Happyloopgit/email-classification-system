@@ -1,0 +1,29 @@
+Subject: Invoice #INV-2023-4567 for Recent Purchase
+
+Dear Customer,
+
+Thank you for your recent purchase. Please find attached the invoice (#INV-2023-4567) for your order.
+
+Invoice Details:
+- Invoice Number: INV-2023-4567
+- Order Number: ORD-78901
+- Date: September 15, 2023
+- Due Date: October 15, 2023
+- Total Amount: $2,345.67
+
+Payment Methods:
+- Credit Card
+- Bank Transfer to Account #12345678
+- Check payable to "Example Company"
+
+If you have any questions about this invoice or need assistance with payment, please contact our billing department at billing@example.com or call 555-123-4567.
+
+We appreciate your business!
+
+Best regards,
+Billing Department
+Example Company
+123 Business Street
+City, State 12345
+Phone: 555-987-6543
+Email: info@example.com
