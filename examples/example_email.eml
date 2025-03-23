@@ -1,0 +1,38 @@
+From: sender@example.com
+To: recipient@example.com
+Subject: Invoice Payment Request #12345
+Date: Mon, 24 Jul 2023 10:15:30 -0400
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="boundary123"
+
+--boundary123
+Content-Type: text/plain; charset="utf-8"
+
+Hello,
+
+I am writing to request payment for invoice #12345 in the amount of $1,250.00.
+
+Please process this payment at your earliest convenience.
+
+The payment is due on August 15, 2023. Please reference account number ACCT-9876.
+
+Thank you,
+John Smith
+Accounting Department
+
+--boundary123
+Content-Type: text/html; charset="utf-8"
+
+<html>
+<body>
+<p>Hello,</p>
+<p>I am writing to request payment for invoice <strong>#12345</strong> in the amount of <strong>$1,250.00</strong>.</p>
+<p>Please process this payment at your earliest convenience.</p>
+<p>The payment is due on <strong>August 15, 2023</strong>. Please reference account number <strong>ACCT-9876</strong>.</p>
+<p>Thank you,<br>
+John Smith<br>
+Accounting Department</p>
+</body>
+</html>
+
+--boundary123--
