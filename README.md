@@ -1,133 +1,94 @@
 # Email Classification System
 
-A system for classifying emails, extracting relevant information based on the request type, and detecting duplicates using vector similarity search.
+A comprehensive system for classifying, processing, and extracting information from emails. The system uses NLP and machine learning techniques to identify email types, extract relevant information, and generate formatted reports.
 
 ## Features
 
-- Email classification into multiple request types
-- Information extraction based on email content and request type
-- Document processing (attachments, PDF, Word, etc.)
-- Duplicate detection using vector similarity search
-- REST API for integration with other systems
+- **Email Classification**: Classify emails into predefined request types
+- **Information Extraction**: Extract key data points from email content and attachments
+- **Duplicate Detection**: Identify duplicate and similar emails using vector similarity
+- **Report Generation**: Generate formatted reports (PDF, JSON) with extracted information
+- **API Access**: Process emails via a RESTful API
 
-## API Documentation
+## Architecture
 
-The system provides a RESTful API with the following endpoints:
+The system follows a modular architecture with these main components:
 
-### Classify Email
-
-```
-POST /api/v1/classify
-```
-
-Classifies an email, extracts relevant information, and checks for duplicates.
-
-**Parameters:**
-- `email_content` (string, required): The body of the email
-- `email_subject` (string, required): The subject of the email
-- `email_from` (string, required): The sender of the email
-- `email_date` (string, required): The date the email was sent
-- `attachment` (file, optional): Optional attachment file
-
-**Response:**
-```json
-{
-  "request_type": "string",
-  "confidence": 0.95,
-  "extracted_fields": {
-    "field1": "value1",
-    "field2": "value2"
-  },
-  "is_duplicate": false,
-  "similar_emails": []
-}
-```
-
-### Get Request Types
-
-```
-GET /api/v1/request-types
-```
-
-Returns a list of supported request types.
-
-**Response:**
-```json
-[
-  "information_request",
-  "change_request",
-  "complaint",
-  "feedback",
-  "account_update",
-  "technical_support",
-  "billing_inquiry"
-]
-```
+- **Email Parser**: Parses raw emails into structured content
+- **Classification Service**: Classifies emails and detects duplicates
+- **Extraction Service**: Extracts relevant information based on email type
+- **Reporting Service**: Generates reports in various formats
+- **API**: Provides REST endpoints for email processing
 
 ## Installation
 
-1. Clone the repository
-2. Create a virtual environment: `python -m venv venv`
-3. Activate the virtual environment: 
-   - Windows: `venv\Scripts\activate`
-   - Unix/macOS: `source venv/bin/activate`
-4. Install dependencies: `pip install -r requirements.txt`
-5. Copy `.env.example` to `.env` and configure the settings
-6. If using OCR functionality, install Tesseract OCR:
-   - Windows: Download and install from https://github.com/UB-Mannheim/tesseract/wiki
-   - macOS: `brew install tesseract`
-   - Linux: `sudo apt-get install tesseract-ocr`
+```bash
+# Clone the repository
+git clone https://github.com/Happyloopgit/email-classification-system.git
+cd email-classification-system
+
+# Create a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -e .
+```
 
 ## Usage
 
-### Running the API Server
-
-```bash
-python -m src.email_classification.main
-```
-
-This will start the FastAPI server on the host and port specified in your `.env` file (defaults to http://0.0.0.0:8000).
-
-You can access the API documentation at http://localhost:8000/docs.
-
-### Example API Call
+### Processing an Email
 
 ```python
-import requests
+from email_classification.email_parser import EmailParser
+from email_classification.classification.classifier import EmailClassifier
+from email_classification.extraction.extraction_service import ExtractionService
+from email_classification.reporting.report_generator import ReportGenerator
 
-url = "http://localhost:8000/api/v1/classify"
-files = {
-    'attachment': ('invoice.pdf', open('invoice.pdf', 'rb'), 'application/pdf')
-}
-data = {
-    'email_content': 'Please find attached invoice for your recent purchase.',
-    'email_subject': 'Invoice for Order #12345',
-    'email_from': 'billing@example.com',
-    'email_date': '2023-09-15T14:30:00Z'
-}
+# Parse email
+parser = EmailParser()
+email_content = parser.parse_file("path/to/email.eml")
 
-response = requests.post(url, files=files, data=data)
-print(response.json())
+# Classify email
+classifier = EmailClassifier()
+request_type, confidence = classifier.classify(email_content)
+print(f"Email classified as {request_type} with confidence {confidence}")
+
+# Extract information
+# (In a real implementation, you would initialize these properly)
+text_processor = TextProcessor()
+document_processor = DocumentProcessor()
+entity_processor = EntityProcessor()
+
+extraction_service = ExtractionService(text_processor, document_processor, entity_processor)
+extracted_data = extraction_service.extract(email_content, request_type)
+
+# Generate report
+report_generator = ReportGenerator()
+pdf_path = report_generator.generate_pdf_report(extracted_data)
+print(f"Generated PDF report at {pdf_path}")
 ```
+
+### Using the API
+
+```bash
+# Start the API server
+python -m email_classification.api.main
+```
+
+Then send a POST request to `/api/process-email` with the email content.
 
 ## Configuration
 
-The system can be configured via environment variables or the `.env` file:
+Configuration is managed through environment variables or a `.env` file:
 
-| Variable | Description | Default |
-|----------|-------------|--------|
-| API_HOST | API server host | 0.0.0.0 |
-| API_PORT | API server port | 8000 |
-| LOG_LEVEL | Logging level | info |
-| API_RELOAD | Enable auto-reload | false |
-| CLASSIFIER_MODEL | Model for email classification | all-MiniLM-L6-v2 |
-| VECTOR_STORE_MODEL | Model for vector store | all-MiniLM-L6-v2 |
-| SIMILARITY_THRESHOLD | Threshold for duplicate detection | 0.9 |
-| EXTRACTION_LLM_MODEL | LLM model for extraction | gpt-4 |
-| OCR_ENABLED | Enable OCR for documents | true |
-| LANGUAGE | Language for extraction | en |
-| OPENAI_API_KEY | OpenAI API key | - |
+```
+LOG_LEVEL=INFO
+LOG_FILE=logs/app.log
+VECTOR_STORE_DIR=data/vector_store
+MODEL_PATH=models/classifier
+```
 
 ## License
 
-[MIT License](LICENSE)
+MIT
